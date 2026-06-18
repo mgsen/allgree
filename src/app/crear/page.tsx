@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { jsPDF } from "jspdf";
 
 interface Parte {
   nombre: string;
@@ -39,6 +40,121 @@ async function calcularHashSHA256(contenido: string): Promise<string> {
   return Array.from(new Uint8Array(hashBuffer))
     .map((byte) => byte.toString(16).padStart(2, "0"))
     .join("");
+}
+
+function generarPDF(acuerdo: Acuerdo) {
+  const doc = new jsPDF({ unit: "mm", format: "a4" });
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const pageHeight = doc.internal.pageSize.getHeight();
+  const marginX = 20;
+  const maxWidth = pageWidth - marginX * 2;
+  const footerHeight = 22;
+  let y = 20;
+
+  function saltoDePaginaSiHaceFalta(espacioNecesario: number) {
+    if (y + espacioNecesario > pageHeight - footerHeight) {
+      doc.addPage();
+      y = 20;
+    }
+  }
+
+  // Encabezado
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(16);
+  doc.text("PACTO — Acuerdo Extrajudicial", marginX, y);
+  y += 6;
+  doc.setDrawColor(200);
+  doc.line(marginX, y, pageWidth - marginX, y);
+  y += 8;
+
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(10);
+  doc.setTextColor(0);
+  doc.text(
+    `Fecha de creación: ${new Date(acuerdo.timestamp).toLocaleString("es-AR")}`,
+    marginX,
+    y,
+  );
+  y += 10;
+
+  // Partes
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(12);
+  doc.text("Partes del acuerdo", marginX, y);
+  y += 7;
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(10);
+  doc.text(
+    `Proponente: ${acuerdo.partes.proponente.nombre} (${acuerdo.partes.proponente.email})`,
+    marginX,
+    y,
+  );
+  y += 6;
+  doc.text(
+    `Aceptante: ${acuerdo.partes.aceptante.nombre} (${acuerdo.partes.aceptante.email})`,
+    marginX,
+    y,
+  );
+  y += 10;
+
+  // Cláusulas
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(12);
+  saltoDePaginaSiHaceFalta(10);
+  doc.text("Cláusulas", marginX, y);
+  y += 8;
+
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(10);
+  acuerdo.clausulas.forEach((clausula, index) => {
+    const lineas = doc.splitTextToSize(`${index + 1}. ${clausula}`, maxWidth);
+    saltoDePaginaSiHaceFalta(lineas.length * 5 + 4);
+    doc.text(lineas, marginX, y);
+    y += lineas.length * 5 + 4;
+  });
+
+  y += 4;
+
+  // Firmas
+  saltoDePaginaSiHaceFalta(25);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(12);
+  doc.text("Firmas", marginX, y);
+  y += 8;
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(10);
+  doc.text(
+    `Proponente: ${acuerdo.firmas.proponente.nombre} — firmado el ${acuerdo.firmas.proponente.fecha} a las ${acuerdo.firmas.proponente.hora}`,
+    marginX,
+    y,
+  );
+  y += 7;
+  doc.text(
+    `Aceptante: ${acuerdo.firmas.aceptante.nombre} — firmado el ${acuerdo.firmas.aceptante.fecha} a las ${acuerdo.firmas.aceptante.hora}`,
+    marginX,
+    y,
+  );
+
+  // Pie de página en todas las páginas
+  const totalPaginas = doc.getNumberOfPages();
+  for (let pagina = 1; pagina <= totalPaginas; pagina++) {
+    doc.setPage(pagina);
+    doc.setDrawColor(220);
+    doc.line(marginX, pageHeight - footerHeight + 2, pageWidth - marginX, pageHeight - footerHeight + 2);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(8);
+    doc.setTextColor(100);
+    doc.text(`Hash SHA-256: ${acuerdo.hash}`, marginX, pageHeight - footerHeight + 8, {
+      maxWidth,
+    });
+    doc.text(
+      "Documento generado por Pacto. Hash verificable en pacto.vercel.app/verificar",
+      marginX,
+      pageHeight - footerHeight + 14,
+    );
+  }
+
+  doc.save(`acuerdo-pacto-${acuerdo.id}.pdf`);
 }
 
 export default function CrearAcuerdo() {
@@ -95,7 +211,7 @@ export default function CrearAcuerdo() {
   }
 
   const [firmas, setFirmas] = useState<Firmas>({});
-  const [hash, setHash] = useState("");
+  const [acuerdoSellado, setAcuerdoSellado] = useState<Acuerdo | null>(null);
   const [sellando, setSellando] = useState(false);
 
   function firmarComo(rol: "proponente" | "aceptante") {
@@ -148,11 +264,11 @@ export default function CrearAcuerdo() {
 
     localStorage.setItem(`acuerdo_${acuerdo.id}`, JSON.stringify(acuerdo));
 
-    setHash(hashCalculado);
+    setAcuerdoSellado(acuerdo);
     setSellando(false);
   }
 
-  const sellado = Boolean(hash);
+  const sellado = acuerdoSellado !== null;
 
   return (
     <div className="flex flex-1 flex-col bg-zinc-50 dark:bg-black">
@@ -371,16 +487,28 @@ export default function CrearAcuerdo() {
                 </p>
               )}
 
-              {sellado && (
-                <div className="flex flex-col gap-2 rounded-xl bg-zinc-50 p-4 text-sm text-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
-                  <p className="font-medium text-zinc-950 dark:text-zinc-50">
-                    Acuerdo sellado — Hash SHA-256:{" "}
-                    <span className="break-all font-mono text-xs">{hash}</span>
-                  </p>
-                  <p>
-                    Este hash es la huella digital inmutable de tu acuerdo.
-                  </p>
-                  <p>Cualquier modificación al documento cambia el hash.</p>
+              {sellado && acuerdoSellado && (
+                <div className="flex flex-col gap-4 rounded-xl bg-zinc-50 p-4 text-sm text-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
+                  <div className="flex flex-col gap-2">
+                    <p className="font-medium text-zinc-950 dark:text-zinc-50">
+                      Acuerdo sellado — Hash SHA-256:{" "}
+                      <span className="break-all font-mono text-xs">
+                        {acuerdoSellado.hash}
+                      </span>
+                    </p>
+                    <p>
+                      Este hash es la huella digital inmutable de tu acuerdo.
+                    </p>
+                    <p>Cualquier modificación al documento cambia el hash.</p>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => generarPDF(acuerdoSellado)}
+                    className="flex h-11 items-center justify-center self-start rounded-full bg-zinc-950 px-6 text-sm font-medium text-zinc-50 transition-colors hover:bg-zinc-800 dark:bg-zinc-50 dark:text-zinc-950 dark:hover:bg-zinc-200"
+                  >
+                    Descargar PDF
+                  </button>
                 </div>
               )}
             </section>
