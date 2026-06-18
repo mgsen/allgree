@@ -1,33 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { jsPDF } from "jspdf";
-
-interface Parte {
-  nombre: string;
-  email: string;
-}
-
-interface Firma {
-  nombre: string;
-  fecha: string;
-  hora: string;
-}
-
-interface Acuerdo {
-  id: number;
-  clausulas: string[];
-  partes: {
-    proponente: Parte;
-    aceptante: Parte;
-  };
-  firmas: {
-    proponente: Firma;
-    aceptante: Firma;
-  };
-  hash: string;
-  timestamp: string;
-}
+import type { Acuerdo, Firma } from "@/types/acuerdo";
 
 interface Firmas {
   proponente?: Firma;
@@ -273,10 +249,19 @@ export default function CrearAcuerdo() {
   return (
     <div className="flex flex-1 flex-col bg-zinc-50 dark:bg-black">
       <header className="border-b border-black/[.08] dark:border-white/[.1]">
-        <div className="mx-auto flex max-w-5xl items-center px-6 py-5">
-          <span className="text-xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">
+        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
+          <Link
+            href="/"
+            className="text-xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50"
+          >
             Pacto
-          </span>
+          </Link>
+          <Link
+            href="/verificar"
+            className="text-sm font-medium text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-50"
+          >
+            Verificar acuerdo
+          </Link>
         </div>
       </header>
 
