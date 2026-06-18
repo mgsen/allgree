@@ -2,6 +2,45 @@
 
 import { useState } from "react";
 
+interface Parte {
+  nombre: string;
+  email: string;
+}
+
+interface Firma {
+  nombre: string;
+  fecha: string;
+  hora: string;
+}
+
+interface Acuerdo {
+  id: number;
+  clausulas: string[];
+  partes: {
+    proponente: Parte;
+    aceptante: Parte;
+  };
+  firmas: {
+    proponente: Firma;
+    aceptante: Firma;
+  };
+  hash: string;
+  timestamp: string;
+}
+
+interface Firmas {
+  proponente?: Firma;
+  aceptante?: Firma;
+}
+
+async function calcularHashSHA256(contenido: string): Promise<string> {
+  const data = new TextEncoder().encode(contenido);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+  return Array.from(new Uint8Array(hashBuffer))
+    .map((byte) => byte.toString(16).padStart(2, "0"))
+    .join("");
+}
+
 export default function CrearAcuerdo() {
   const [proponenteNombre, setProponenteNombre] = useState("");
   const [proponenteEmail, setProponenteEmail] = useState("");
@@ -54,6 +93,66 @@ export default function CrearAcuerdo() {
   function agregarClausula() {
     setClausulas((prev) => [...prev, ""]);
   }
+
+  const [firmas, setFirmas] = useState<Firmas>({});
+  const [hash, setHash] = useState("");
+  const [sellando, setSellando] = useState(false);
+
+  function firmarComo(rol: "proponente" | "aceptante") {
+    const nombre = rol === "proponente" ? proponenteNombre : aceptanteNombre;
+    if (!nombre.trim() || firmas[rol]) return;
+
+    const ahora = new Date();
+    const firma: Firma = {
+      nombre: nombre.trim(),
+      fecha: ahora.toLocaleDateString("es-AR"),
+      hora: ahora.toLocaleTimeString("es-AR"),
+    };
+
+    const nuevasFirmas: Firmas = { ...firmas, [rol]: firma };
+    setFirmas(nuevasFirmas);
+
+    if (nuevasFirmas.proponente && nuevasFirmas.aceptante) {
+      sellarAcuerdo(nuevasFirmas.proponente, nuevasFirmas.aceptante);
+    }
+  }
+
+  async function sellarAcuerdo(firmaProponente: Firma, firmaAceptante: Firma) {
+    setSellando(true);
+
+    const partes = {
+      proponente: { nombre: proponenteNombre, email: proponenteEmail },
+      aceptante: { nombre: aceptanteNombre, email: aceptanteEmail },
+    };
+    const firmasCompletas = {
+      proponente: firmaProponente,
+      aceptante: firmaAceptante,
+    };
+
+    const contenido = JSON.stringify({
+      clausulas,
+      partes,
+      firmas: firmasCompletas,
+    });
+    const hashCalculado = await calcularHashSHA256(contenido);
+    const timestamp = new Date().toISOString();
+
+    const acuerdo: Acuerdo = {
+      id: Date.now(),
+      clausulas,
+      partes,
+      firmas: firmasCompletas,
+      hash: hashCalculado,
+      timestamp,
+    };
+
+    localStorage.setItem(`acuerdo_${acuerdo.id}`, JSON.stringify(acuerdo));
+
+    setHash(hashCalculado);
+    setSellando(false);
+  }
+
+  const sellado = Boolean(hash);
 
   return (
     <div className="flex flex-1 flex-col bg-zinc-50 dark:bg-black">
@@ -219,6 +318,73 @@ export default function CrearAcuerdo() {
               </div>
             )}
           </section>
+
+          {clausulas.length > 0 && (
+            <section className="flex flex-col gap-4 rounded-2xl border border-black/[.08] bg-white p-6 dark:border-white/[.1] dark:bg-zinc-950">
+              <h2 className="text-sm font-medium uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
+                Firmar acuerdo
+              </h2>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <button
+                  type="button"
+                  disabled={
+                    !!firmas.proponente || !proponenteNombre.trim() || sellando
+                  }
+                  onClick={() => firmarComo("proponente")}
+                  className="flex h-12 flex-col items-center justify-center rounded-xl border border-black/[.1] px-4 text-sm font-medium text-zinc-950 transition-colors hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/[.15] dark:text-zinc-50 dark:hover:bg-zinc-900"
+                >
+                  {firmas.proponente ? (
+                    <span className="text-center text-xs leading-tight">
+                      Firmado por {firmas.proponente.nombre}
+                      <br />
+                      {firmas.proponente.fecha} {firmas.proponente.hora}
+                    </span>
+                  ) : (
+                    "Firmar como proponente"
+                  )}
+                </button>
+
+                <button
+                  type="button"
+                  disabled={
+                    !!firmas.aceptante || !aceptanteNombre.trim() || sellando
+                  }
+                  onClick={() => firmarComo("aceptante")}
+                  className="flex h-12 flex-col items-center justify-center rounded-xl border border-black/[.1] px-4 text-sm font-medium text-zinc-950 transition-colors hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/[.15] dark:text-zinc-50 dark:hover:bg-zinc-900"
+                >
+                  {firmas.aceptante ? (
+                    <span className="text-center text-xs leading-tight">
+                      Firmado por {firmas.aceptante.nombre}
+                      <br />
+                      {firmas.aceptante.fecha} {firmas.aceptante.hora}
+                    </span>
+                  ) : (
+                    "Firmar como aceptante"
+                  )}
+                </button>
+              </div>
+
+              {sellando && (
+                <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                  Sellando acuerdo...
+                </p>
+              )}
+
+              {sellado && (
+                <div className="flex flex-col gap-2 rounded-xl bg-zinc-50 p-4 text-sm text-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
+                  <p className="font-medium text-zinc-950 dark:text-zinc-50">
+                    Acuerdo sellado — Hash SHA-256:{" "}
+                    <span className="break-all font-mono text-xs">{hash}</span>
+                  </p>
+                  <p>
+                    Este hash es la huella digital inmutable de tu acuerdo.
+                  </p>
+                  <p>Cualquier modificación al documento cambia el hash.</p>
+                </div>
+              )}
+            </section>
+          )}
         </div>
       </main>
     </div>
