@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@stellar/stellar-sdk": "^16.0.1",
     "groq-sdk": "^1.2.1",
     "jspdf": "^4.2.1",
     "next": "16.2.9",

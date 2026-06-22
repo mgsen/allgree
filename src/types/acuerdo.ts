@@ -22,4 +22,5 @@ export interface Acuerdo {
   };
   hash: string;
   timestamp: string;
+  txHash?: string;
 }

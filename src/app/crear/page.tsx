@@ -37,7 +37,7 @@ function generarPDF(acuerdo: Acuerdo) {
   // Encabezado
   doc.setFont("helvetica", "bold");
   doc.setFontSize(16);
-  doc.text("PACTO — Acuerdo Extrajudicial", marginX, y);
+  doc.text("ALLGREE — Acuerdo Extrajudicial", marginX, y);
   y += 6;
   doc.setDrawColor(200);
   doc.line(marginX, y, pageWidth - marginX, y);
@@ -123,14 +123,22 @@ function generarPDF(acuerdo: Acuerdo) {
     doc.text(`Hash SHA-256: ${acuerdo.hash}`, marginX, pageHeight - footerHeight + 8, {
       maxWidth,
     });
+    if (acuerdo.txHash) {
+      doc.text(
+        `Tx Stellar Testnet: ${acuerdo.txHash}`,
+        marginX,
+        pageHeight - footerHeight + 13,
+        { maxWidth },
+      );
+    }
     doc.text(
-      "Documento generado por Pacto. Hash verificable en pacto.vercel.app/verificar",
+      "Documento generado por Allgree. Hash verificable en allgree.vercel.app/verificar",
       marginX,
-      pageHeight - footerHeight + 14,
+      pageHeight - footerHeight + (acuerdo.txHash ? 18 : 14),
     );
   }
 
-  doc.save(`acuerdo-pacto-${acuerdo.id}.pdf`);
+  doc.save(`acuerdo-allgree-${acuerdo.id}.pdf`);
 }
 
 export default function CrearAcuerdo() {
@@ -189,6 +197,8 @@ export default function CrearAcuerdo() {
   const [firmas, setFirmas] = useState<Firmas>({});
   const [acuerdoSellado, setAcuerdoSellado] = useState<Acuerdo | null>(null);
   const [sellando, setSellando] = useState(false);
+  const [registrandoBlockchain, setRegistrandoBlockchain] = useState(false);
+  const [errorBlockchain, setErrorBlockchain] = useState("");
 
   function firmarComo(rol: "proponente" | "aceptante") {
     const nombre = rol === "proponente" ? proponenteNombre : aceptanteNombre;
@@ -242,6 +252,39 @@ export default function CrearAcuerdo() {
 
     setAcuerdoSellado(acuerdo);
     setSellando(false);
+
+    registrarEnBlockchain(acuerdo);
+  }
+
+  async function registrarEnBlockchain(acuerdo: Acuerdo) {
+    setErrorBlockchain("");
+    setRegistrandoBlockchain(true);
+    try {
+      const res = await fetch("/api/registrar-blockchain", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ hash: acuerdo.hash }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "No se pudo registrar en blockchain");
+      }
+
+      const acuerdoConTx: Acuerdo = { ...acuerdo, txHash: data.txHash };
+      localStorage.setItem(
+        `acuerdo_${acuerdoConTx.id}`,
+        JSON.stringify(acuerdoConTx),
+      );
+      setAcuerdoSellado(acuerdoConTx);
+    } catch (err) {
+      setErrorBlockchain(
+        err instanceof Error ? err.message : "Ocurrió un error inesperado",
+      );
+    } finally {
+      setRegistrandoBlockchain(false);
+    }
   }
 
   const sellado = acuerdoSellado !== null;
@@ -254,7 +297,7 @@ export default function CrearAcuerdo() {
             href="/"
             className="text-xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50"
           >
-            Pacto
+            Allgree
           </Link>
           <Link
             href="/verificar"
@@ -486,6 +529,34 @@ export default function CrearAcuerdo() {
                     </p>
                     <p>Cualquier modificación al documento cambia el hash.</p>
                   </div>
+
+                  {registrandoBlockchain && (
+                    <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                      Registrando en blockchain...
+                    </p>
+                  )}
+
+                  {errorBlockchain && (
+                    <p className="text-sm text-red-600 dark:text-red-400">
+                      {errorBlockchain}
+                    </p>
+                  )}
+
+                  {acuerdoSellado.txHash && (
+                    <div className="flex flex-col gap-1">
+                      <p className="font-medium text-zinc-950 dark:text-zinc-50">
+                        Registrado en Stellar Testnet
+                      </p>
+                      <a
+                        href={`https://stellar.expert/explorer/testnet/tx/${acuerdoSellado.txHash}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="break-all font-mono text-xs text-blue-600 underline hover:text-blue-500 dark:text-blue-400"
+                      >
+                        {acuerdoSellado.txHash}
+                      </a>
+                    </div>
+                  )}
 
                   <button
                     type="button"
