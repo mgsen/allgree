@@ -50,7 +50,7 @@ export default function VerificarAcuerdo() {
             href="/"
             className="text-xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50"
           >
-            Pacto
+            Allgree
           </Link>
         </div>
       </header>

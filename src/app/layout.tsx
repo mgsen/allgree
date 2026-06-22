@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Pacto — Acuerdos Extrajudiciales Inmutables",
-  description: "Formalizá tus acuerdos. Sin escribano. Sin excusas.",
+  title: "Allgree — Acuerdos Extrajudiciales Inmutables",
+  description: "Formalizá tus acuerdos. Simple, seguro e inmutable.",
 };
 
 export default function RootLayout({

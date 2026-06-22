@@ -6,7 +6,7 @@ export default function Home() {
       <header className="border-b border-black/[.08] dark:border-white/[.1]">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
           <span className="text-xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">
-            Pacto
+            Allgree
           </span>
           <Link
             href="/verificar"
@@ -20,10 +20,10 @@ export default function Home() {
       <main className="flex flex-1 items-center justify-center px-6">
         <div className="flex max-w-2xl flex-col items-center gap-6 py-24 text-center">
           <h1 className="text-4xl font-semibold leading-tight tracking-tight text-zinc-950 sm:text-5xl dark:text-zinc-50">
-            Formalizá tus acuerdos. Sin escribano. Sin excusas.
+            Formalizá tus acuerdos. Simple, seguro e inmutable.
           </h1>
           <p className="max-w-xl text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Pacto te permite dejar acuerdos extrajudiciales por escrito, con
+            Allgree te permite dejar acuerdos extrajudiciales por escrito, con
             validez y trazabilidad, sin depender de trámites lentos ni
             costosos.
           </p>
