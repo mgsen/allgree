@@ -61,13 +61,13 @@ function generarPDF(acuerdo: Acuerdo) {
   doc.setFont("helvetica", "normal");
   doc.setFontSize(10);
   doc.text(
-    `Proponente: ${acuerdo.partes.proponente.nombre} (${acuerdo.partes.proponente.email})`,
+    `Proponente: ${acuerdo.partes.proponente.nombre} (${acuerdo.partes.proponente.email}) — DNI ${acuerdo.partes.proponente.dni}`,
     marginX,
     y,
   );
   y += 6;
   doc.text(
-    `Aceptante: ${acuerdo.partes.aceptante.nombre} (${acuerdo.partes.aceptante.email})`,
+    `Aceptante: ${acuerdo.partes.aceptante.nombre} (${acuerdo.partes.aceptante.email}) — DNI ${acuerdo.partes.aceptante.dni}`,
     marginX,
     y,
   );
@@ -110,6 +110,21 @@ function generarPDF(acuerdo: Acuerdo) {
     marginX,
     y,
   );
+  y += 10;
+
+  // Declaraciones finales
+  const declaraciones = [
+    "DECLARACIÓN JURADA DIGITAL: Las partes declaran bajo fe de juramento que los correos electrónicos y datos personales consignados son de su exclusiva propiedad y control, y los consideran medios suficientes de notificación y consentimiento digital.",
+    "Las partes han leído el presente acuerdo, están conformes con su contenido y lo suscriben en formato digital en la Ciudad de Mendoza, República Argentina.",
+  ];
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(10);
+  declaraciones.forEach((declaracion) => {
+    const lineas = doc.splitTextToSize(declaracion, maxWidth);
+    saltoDePaginaSiHaceFalta(lineas.length * 5 + 4);
+    doc.text(lineas, marginX, y);
+    y += lineas.length * 5 + 4;
+  });
 
   // Pie de página en todas las páginas
   const totalPaginas = doc.getNumberOfPages();
@@ -144,8 +159,10 @@ function generarPDF(acuerdo: Acuerdo) {
 export default function CrearAcuerdo() {
   const [proponenteNombre, setProponenteNombre] = useState("");
   const [proponenteEmail, setProponenteEmail] = useState("");
+  const [proponenteDni, setProponenteDni] = useState("");
   const [aceptanteNombre, setAceptanteNombre] = useState("");
   const [aceptanteEmail, setAceptanteEmail] = useState("");
+  const [aceptanteDni, setAceptanteDni] = useState("");
   const [descripcion, setDescripcion] = useState("");
 
   const [clausulas, setClausulas] = useState<string[]>([]);
@@ -161,8 +178,16 @@ export default function CrearAcuerdo() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           descripcion,
-          proponente: { nombre: proponenteNombre, email: proponenteEmail },
-          aceptante: { nombre: aceptanteNombre, email: aceptanteEmail },
+          proponente: {
+            nombre: proponenteNombre,
+            email: proponenteEmail,
+            dni: proponenteDni,
+          },
+          aceptante: {
+            nombre: aceptanteNombre,
+            email: aceptanteEmail,
+            dni: aceptanteDni,
+          },
         }),
       });
 
@@ -223,8 +248,16 @@ export default function CrearAcuerdo() {
     setSellando(true);
 
     const partes = {
-      proponente: { nombre: proponenteNombre, email: proponenteEmail },
-      aceptante: { nombre: aceptanteNombre, email: aceptanteEmail },
+      proponente: {
+        nombre: proponenteNombre,
+        email: proponenteEmail,
+        dni: proponenteDni,
+      },
+      aceptante: {
+        nombre: aceptanteNombre,
+        email: aceptanteEmail,
+        dni: aceptanteDni,
+      },
     };
     const firmasCompletas = {
       proponente: firmaProponente,
@@ -354,6 +387,18 @@ export default function CrearAcuerdo() {
                     className="rounded-lg border border-black/[.1] bg-white px-3 py-2 text-sm text-zinc-950 outline-none focus:border-zinc-950 dark:border-white/[.15] dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-zinc-50"
                   />
                 </label>
+                <label className="flex flex-col gap-1.5">
+                  <span className="text-sm text-zinc-600 dark:text-zinc-400">
+                    DNI
+                  </span>
+                  <input
+                    type="text"
+                    value={proponenteDni}
+                    onChange={(e) => setProponenteDni(e.target.value)}
+                    placeholder="12345678"
+                    className="rounded-lg border border-black/[.1] bg-white px-3 py-2 text-sm text-zinc-950 outline-none focus:border-zinc-950 dark:border-white/[.15] dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-zinc-50"
+                  />
+                </label>
               </div>
 
               <div className="flex flex-col gap-4">
@@ -384,6 +429,18 @@ export default function CrearAcuerdo() {
                     className="rounded-lg border border-black/[.1] bg-white px-3 py-2 text-sm text-zinc-950 outline-none focus:border-zinc-950 dark:border-white/[.15] dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-zinc-50"
                   />
                 </label>
+                <label className="flex flex-col gap-1.5">
+                  <span className="text-sm text-zinc-600 dark:text-zinc-400">
+                    DNI
+                  </span>
+                  <input
+                    type="text"
+                    value={aceptanteDni}
+                    onChange={(e) => setAceptanteDni(e.target.value)}
+                    placeholder="12345678"
+                    className="rounded-lg border border-black/[.1] bg-white px-3 py-2 text-sm text-zinc-950 outline-none focus:border-zinc-950 dark:border-white/[.15] dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-zinc-50"
+                  />
+                </label>
               </div>
             </div>
           </section>
@@ -403,7 +460,16 @@ export default function CrearAcuerdo() {
 
           <button
             type="button"
-            disabled={generando || !descripcion.trim()}
+            disabled={
+              generando ||
+              !descripcion.trim() ||
+              !proponenteNombre.trim() ||
+              !proponenteEmail.trim() ||
+              !proponenteDni.trim() ||
+              !aceptanteNombre.trim() ||
+              !aceptanteEmail.trim() ||
+              !aceptanteDni.trim()
+            }
             onClick={generarClausulas}
             className="flex h-12 items-center justify-center rounded-full bg-zinc-950 px-8 text-base font-medium text-zinc-50 transition-colors hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-40 dark:bg-zinc-50 dark:text-zinc-950 dark:hover:bg-zinc-200"
           >
@@ -462,6 +528,19 @@ export default function CrearAcuerdo() {
               </div>
             )}
           </section>
+
+          {clausulas.length > 0 && (
+            <div className="flex items-start gap-3 rounded-xl border border-orange-300 bg-yellow-50 p-4 text-sm text-zinc-800 dark:border-orange-700 dark:bg-yellow-950/30 dark:text-zinc-200">
+              <span aria-hidden="true">⚠️</span>
+              <p>
+                Documento con firma electrónica (Ley 25.506). En caso de
+                desconocimiento de firma, la parte demandante deberá probar
+                autoría mediante pericia informática. NO válido para:
+                inmuebles, derechos reales, actos de derecho de familia ni
+                testamentos (Art. 1017 CCyCN).
+              </p>
+            </div>
+          )}
 
           {clausulas.length > 0 && (
             <section className="flex flex-col gap-4 rounded-2xl border border-black/[.08] bg-white p-6 dark:border-white/[.1] dark:bg-zinc-950">

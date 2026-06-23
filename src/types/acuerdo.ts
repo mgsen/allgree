@@ -1,6 +1,7 @@
 export interface Parte {
   nombre: string;
   email: string;
+  dni: string;
 }
 
 export interface Firma {

@@ -5,6 +5,7 @@ const client = new Groq();
 
 const SYSTEM_PROMPT = `Sos un asistente que redacta cláusulas para acuerdos extrajudiciales en español.
 A partir de los datos del proponente, el aceptante y la descripción del acuerdo que te da el usuario, generá entre 4 y 6 cláusulas legales claras y concretas que reflejen ese acuerdo.
+El usuario te da el nombre, email y DNI de cada parte: identificá a cada parte por su nombre completo y su DNI en al menos la cláusula donde se las presenta (por ejemplo: "Juan Pérez, DNI 12345678").
 Cada cláusula es un string independiente del array de salida, sin numeración (la numeración se agrega en la interfaz).
 Basate estrictamente en lo que describe el usuario, sin inventar condiciones, montos o plazos adicionales que no haya mencionado.
 Usá un lenguaje formal pero entendible para alguien sin formación legal, evitando jerga innecesaria.
@@ -13,6 +14,7 @@ Respondé únicamente con un objeto JSON válido con la forma {"clausulas": ["..
 interface Persona {
   nombre?: string;
   email?: string;
+  dni?: string;
 }
 
 export async function POST(request: NextRequest) {
@@ -28,8 +30,8 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const userContent = `Proponente: ${proponente.nombre || "(sin nombre)"} (${proponente.email || "sin email"})
-Aceptante: ${aceptante.nombre || "(sin nombre)"} (${aceptante.email || "sin email"})
+  const userContent = `Proponente: ${proponente.nombre || "(sin nombre)"} (${proponente.email || "sin email"}), DNI ${proponente.dni || "(sin DNI)"}
+Aceptante: ${aceptante.nombre || "(sin nombre)"} (${aceptante.email || "sin email"}), DNI ${aceptante.dni || "(sin DNI)"}
 
 Descripción del acuerdo:
 ${descripcion}`;
