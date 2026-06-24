@@ -30,6 +30,12 @@ export default function Header() {
             Sobre Allgree
           </Link>
           <Link
+            href="/login"
+            className="text-sm font-medium text-slate-600 hover:text-[#1B3A6B]"
+          >
+            Iniciar sesión
+          </Link>
+          <Link
             href="/crear"
             className="flex h-9 items-center justify-center rounded-full bg-[#1B3A6B] px-5 text-sm font-semibold text-white transition-colors hover:bg-[#142c52]"
           >

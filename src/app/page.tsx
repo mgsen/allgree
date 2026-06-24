@@ -38,6 +38,14 @@ export default function Home() {
                   Ver en GitHub →
                 </Link>
               </div>
+              <div className="flex flex-wrap gap-4">
+                <Link
+                  href="/login"
+                  className="flex h-12 items-center justify-center rounded-full border-2 border-[#1B3A6B] px-8 text-base font-semibold text-[#1B3A6B] transition-colors hover:bg-[#1B3A6B]/5"
+                >
+                  Registrarse
+                </Link>
+              </div>
             </div>
             <div className="flex justify-center lg:justify-end">
               <Image
