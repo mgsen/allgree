@@ -1,36 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
+import Header from "@/components/Header";
 
 export default function Home() {
   return (
     <div className="flex flex-1 flex-col bg-white">
-      <header className="border-b border-slate-200">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
-          <span className="text-xl font-bold tracking-tight text-[#1B3A6B]">
-            Allgree
-          </span>
-          <div className="flex items-center gap-6">
-            <Link
-              href="/verificar"
-              className="text-sm font-medium text-slate-600 hover:text-[#1B3A6B]"
-            >
-              Verificar acuerdo
-            </Link>
-            <Link
-              href="/mis-acuerdos"
-              className="text-sm font-medium text-slate-600 hover:text-[#1B3A6B]"
-            >
-              Mis acuerdos
-            </Link>
-            <Link
-              href="/crear"
-              className="flex h-9 items-center justify-center rounded-full bg-[#1B3A6B] px-5 text-sm font-semibold text-white transition-colors hover:bg-[#142c52]"
-            >
-              Crear acuerdo
-            </Link>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       <main className="flex flex-1 flex-col">
         {/* Hero */}

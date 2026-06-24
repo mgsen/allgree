@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import type { Acuerdo } from "@/types/acuerdo";
+import Header from "@/components/Header";
 
 function leerAcuerdos(): Acuerdo[] {
   const acuerdos: Acuerdo[] = [];
@@ -52,22 +53,7 @@ export default function MisAcuerdos() {
 
   return (
     <div className="flex flex-1 flex-col bg-zinc-50 dark:bg-black">
-      <header className="border-b border-black/[.08] dark:border-white/[.1]">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
-          <Link
-            href="/"
-            className="text-xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50"
-          >
-            Allgree
-          </Link>
-          <Link
-            href="/verificar"
-            className="text-sm font-medium text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-50"
-          >
-            Verificar acuerdo
-          </Link>
-        </div>
-      </header>
+      <Header />
 
       <main className="flex flex-1 justify-center px-6 py-12">
         <div className="flex w-full max-w-5xl flex-col gap-8">
