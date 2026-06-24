@@ -301,4 +301,14 @@ const FAQ = [
     respuesta:
       "El documento sirve como prueba ante un juez. Se puede solicitar pericia informática para validar la firma.",
   },
+  {
+    pregunta: "¿Qué es Stellar y por qué usamos blockchain?",
+    respuesta:
+      "Stellar es una red blockchain pública diseñada para transacciones rápidas y económicas. Cuando firmás un acuerdo en Allgree, el hash SHA-256 del documento queda registrado permanentemente en Stellar con fecha y hora. Esto significa que cualquier persona puede verificar en cualquier momento que el documento existía en ese momento exacto y no fue modificado — sin depender de Allgree ni de ningún servidor centralizado.",
+  },
+  {
+    pregunta: "¿Puedo verificar mi acuerdo sin usar Allgree?",
+    respuesta:
+      "Sí. Cada acuerdo incluye un link directo a Stellar Expert (stellar.expert), el explorador oficial de la red Stellar. Ahí podés ver la transacción blockchain con el hash de tu documento, verificable por cualquier persona en el mundo de forma completamente independiente.",
+  },
 ];
