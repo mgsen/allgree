@@ -26,4 +26,6 @@ export interface Acuerdo {
   hash: string;
   timestamp: string;
   txHash?: string;
+  estado?: "borrador" | "firmado";
+  pdfBase64?: string;
 }

@@ -8,12 +8,20 @@ export default function Home() {
           <span className="text-xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">
             Allgree
           </span>
-          <Link
-            href="/verificar"
-            className="text-sm font-medium text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-50"
-          >
-            Verificar acuerdo
-          </Link>
+          <div className="flex items-center gap-6">
+            <Link
+              href="/mis-acuerdos"
+              className="text-sm font-medium text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-50"
+            >
+              Mis acuerdos
+            </Link>
+            <Link
+              href="/verificar"
+              className="text-sm font-medium text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-50"
+            >
+              Verificar acuerdo
+            </Link>
+          </div>
         </div>
       </header>
 
