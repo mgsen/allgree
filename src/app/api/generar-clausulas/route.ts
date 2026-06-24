@@ -17,7 +17,7 @@ REGLAS OBLIGATORIAS:
 
 4. INCUMPLIMIENTO: Siempre incluí una cláusula que establezca qué sucede si alguna de las partes no cumple con lo acordado.
 
-5. DOMICILIO Y JURISDICCIÓN: Incluí una cláusula donde las partes fijan domicilio y se someten a los Tribunales Ordinarios de la Ciudad de Mendoza, Provincia de Mendoza, República Argentina.
+5. DOMICILIO Y JURISDICCIÓN: Incluí una cláusula donde las partes fijan como domicilio el que cada una declaró (el domicilio real del proponente y del aceptante que te da el usuario) y se someten a los Tribunales Ordinarios con competencia en el domicilio del proponente, República Argentina.
 
 6. LIMITACIONES: Este sistema NO genera cláusulas para: compraventa de inmuebles, derechos reales, actos de derecho de familia ni testamentos (Art. 1017 CCyCN). Si el usuario describe alguno de estos casos, generá una sola cláusula indicando que ese tipo de acuerdo requiere escritura pública ante escribano.
 
@@ -29,6 +29,8 @@ interface Persona {
   nombre?: string;
   email?: string;
   dni?: string;
+  domicilio?: string;
+  nacionalidad?: string;
 }
 
 export async function POST(request: NextRequest) {
@@ -44,8 +46,8 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const userContent = `Proponente: ${proponente.nombre || "(sin nombre)"} (${proponente.email || "sin email"}), DNI ${proponente.dni || "(sin DNI)"}
-Aceptante: ${aceptante.nombre || "(sin nombre)"} (${aceptante.email || "sin email"}), DNI ${aceptante.dni || "(sin DNI)"}
+  const userContent = `Proponente: ${proponente.nombre || "(sin nombre)"} (${proponente.email || "sin email"}), DNI ${proponente.dni || "(sin DNI)"}, nacionalidad ${proponente.nacionalidad || "(sin nacionalidad)"}, con domicilio en ${proponente.domicilio || "(sin domicilio)"}
+Aceptante: ${aceptante.nombre || "(sin nombre)"} (${aceptante.email || "sin email"}), DNI ${aceptante.dni || "(sin DNI)"}, nacionalidad ${aceptante.nacionalidad || "(sin nacionalidad)"}, con domicilio en ${aceptante.domicilio || "(sin domicilio)"}
 
 Descripción del acuerdo:
 ${descripcion}`;
