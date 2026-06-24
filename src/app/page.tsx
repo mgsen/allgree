@@ -118,6 +118,75 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Pricing */}
+        <section className="border-t border-slate-200 px-6 py-20">
+          <div className="mx-auto flex max-w-6xl flex-col gap-12">
+            <h2 className="text-center text-3xl font-bold tracking-tight text-[#1B3A6B]">
+              Planes para cada necesidad
+            </h2>
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+              {PLANES.map(
+                ({
+                  nombre,
+                  precio,
+                  descripcion,
+                  features,
+                  boton,
+                  destacado,
+                }) => (
+                  <div
+                    key={nombre}
+                    className={`relative flex flex-col gap-6 rounded-2xl border p-8 ${
+                      destacado
+                        ? "border-2 border-[#1B3A6B] bg-white shadow-lg"
+                        : "border-slate-200 bg-white"
+                    }`}
+                  >
+                    {destacado && (
+                      <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[#1B3A6B] px-4 py-1 text-xs font-semibold text-white">
+                        Más popular
+                      </span>
+                    )}
+                    <div className="flex flex-col gap-1">
+                      <h3 className="text-lg font-bold text-[#1B3A6B]">
+                        {nombre}
+                      </h3>
+                      <p className="text-sm text-slate-500">{descripcion}</p>
+                    </div>
+                    <span className="text-3xl font-extrabold text-[#1B3A6B]">
+                      {precio}
+                    </span>
+                    <ul className="flex flex-col gap-2 text-sm text-slate-600">
+                      {features.map((feature) => (
+                        <li key={feature} className="flex items-center gap-2">
+                          <span className="text-[#1D9E75]">✓</span>
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                    {boton.href ? (
+                      <Link
+                        href={boton.href}
+                        className="mt-auto flex h-11 items-center justify-center rounded-full bg-[#1B3A6B] px-6 text-sm font-semibold text-white transition-colors hover:bg-[#142c52]"
+                      >
+                        {boton.label}
+                      </Link>
+                    ) : (
+                      <button
+                        type="button"
+                        disabled
+                        className="mt-auto flex h-11 cursor-not-allowed items-center justify-center rounded-full border-2 border-slate-200 px-6 text-sm font-semibold text-slate-400"
+                      >
+                        {boton.label}
+                      </button>
+                    )}
+                  </div>
+                ),
+              )}
+            </div>
+          </div>
+        </section>
+
         {/* FAQ */}
         <section className="border-t border-slate-200 px-6 py-20">
           <div className="mx-auto flex max-w-3xl flex-col gap-10">
@@ -184,6 +253,48 @@ const STATS = [
   { titulo: "100% Legal", descripcion: "Ley 25.506 de Firma Digital" },
   { titulo: "Blockchain Real", descripcion: "Red Stellar Testnet" },
   { titulo: "Gratis para empezar", descripcion: "Sin tarjeta de crédito" },
+];
+
+const PLANES = [
+  {
+    nombre: "Gratis",
+    precio: "$0",
+    descripcion: "Para empezar",
+    features: [
+      "3 acuerdos por mes",
+      "IA genera cláusulas",
+      "Hash SHA-256",
+      "PDF descargable",
+    ],
+    boton: { label: "Empezar gratis", href: "/crear" },
+    destacado: false,
+  },
+  {
+    nombre: "Personal",
+    precio: "$5 USD/mes",
+    descripcion: "Para uso frecuente",
+    features: [
+      "Acuerdos ilimitados",
+      "Todo lo del plan gratis",
+      "Registro en blockchain",
+      "Historial completo",
+    ],
+    boton: { label: "Próximamente", href: null },
+    destacado: true,
+  },
+  {
+    nombre: "Empresa",
+    precio: "$29 USD/mes",
+    descripcion: "Para equipos",
+    features: [
+      "Todo lo del plan personal",
+      "Múltiples usuarios",
+      "API access",
+      "Soporte prioritario",
+    ],
+    boton: { label: "Próximamente", href: null },
+    destacado: false,
+  },
 ];
 
 const FAQ = [
