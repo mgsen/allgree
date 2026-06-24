@@ -55,10 +55,12 @@ export default function Home() {
                   Crear acuerdo →
                 </Link>
                 <Link
-                  href="/verificar"
+                  href="https://github.com/mgsen/allgree"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex h-12 items-center justify-center rounded-full border-2 border-[#1B3A6B] px-8 text-base font-semibold text-[#1B3A6B] transition-colors hover:bg-[#1B3A6B]/5"
                 >
-                  Ver demo
+                  Ver en GitHub →
                 </Link>
               </div>
             </div>
