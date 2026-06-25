@@ -476,25 +476,25 @@ export default function CrearAcuerdo() {
   const sellado = acuerdoSellado !== null;
 
   return (
-    <div className="flex flex-1 flex-col bg-zinc-50 dark:bg-black">
-      <header className="border-b border-black/[.08] dark:border-white/[.1]">
+    <div className="flex flex-1 flex-col bg-white">
+      <header className="border-b border-gray-200">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
           <Link
             href="/"
-            className="text-xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50"
+            className="text-xl font-bold tracking-tight text-[#1B3A6B]"
           >
             Allgree
           </Link>
           <div className="flex items-center gap-6">
             <Link
               href="/mis-acuerdos"
-              className="text-sm font-medium text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-50"
+              className="text-sm font-medium text-gray-600 hover:text-[#1B3A6B]"
             >
               Mis acuerdos
             </Link>
             <Link
               href="/verificar"
-              className="text-sm font-medium text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-50"
+              className="text-sm font-medium text-gray-600 hover:text-[#1B3A6B]"
             >
               Verificar acuerdo
             </Link>
@@ -502,160 +502,140 @@ export default function CrearAcuerdo() {
         </div>
       </header>
 
-      <main className="flex flex-1 justify-center px-6 py-12">
-        <div className="flex w-full max-w-2xl flex-col gap-10">
+      <main className="flex flex-1 px-4 py-8">
+        <div className="mx-auto flex w-full max-w-3xl flex-col gap-10">
           <div className="flex flex-col gap-2">
-            <h1 className="text-2xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">
+            <h1 className="text-2xl font-bold tracking-tight text-[#1B3A6B]">
               Crear acuerdo
             </h1>
-            <p className="text-zinc-600 dark:text-zinc-400">
+            <p className="text-gray-600">
               Completá los datos de las partes y describí el acuerdo en tus
               palabras.
             </p>
           </div>
 
-          <section className="flex flex-col gap-6 rounded-2xl border border-black/[.08] bg-white p-6 dark:border-white/[.1] dark:bg-zinc-950">
-            <h2 className="text-sm font-medium uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
+          <section className="flex flex-col gap-6 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+            <h2 className="text-sm font-bold uppercase tracking-wide text-[#1B3A6B]">
               Partes del acuerdo
             </h2>
 
             <div className="grid gap-6 sm:grid-cols-2">
               <div className="flex flex-col gap-4">
-                <p className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                <p className="text-sm font-medium text-gray-700">
                   Proponente
                 </p>
                 <label className="flex flex-col gap-1.5">
-                  <span className="text-sm text-zinc-600 dark:text-zinc-400">
-                    Nombre
-                  </span>
+                  <span className="text-sm text-gray-600">Nombre</span>
                   <input
                     type="text"
                     value={proponenteNombre}
                     onChange={(e) => setProponenteNombre(e.target.value)}
                     placeholder="Ej: Juan Pérez"
-                    className="rounded-lg border border-black/[.1] bg-white px-3 py-2 text-sm text-zinc-950 outline-none focus:border-zinc-950 dark:border-white/[.15] dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-zinc-50"
+                    className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-900 outline-none focus:border-transparent focus:ring-2 focus:ring-blue-500"
                   />
                 </label>
                 <label className="flex flex-col gap-1.5">
-                  <span className="text-sm text-zinc-600 dark:text-zinc-400">
-                    Email
-                  </span>
+                  <span className="text-sm text-gray-600">Email</span>
                   <input
                     type="email"
                     value={proponenteEmail}
                     onChange={(e) => setProponenteEmail(e.target.value)}
                     placeholder="juan@email.com"
-                    className="rounded-lg border border-black/[.1] bg-white px-3 py-2 text-sm text-zinc-950 outline-none focus:border-zinc-950 dark:border-white/[.15] dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-zinc-50"
+                    className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-900 outline-none focus:border-transparent focus:ring-2 focus:ring-blue-500"
                   />
                 </label>
                 <label className="flex flex-col gap-1.5">
-                  <span className="text-sm text-zinc-600 dark:text-zinc-400">
-                    DNI
-                  </span>
+                  <span className="text-sm text-gray-600">DNI</span>
                   <input
                     type="text"
                     value={proponenteDni}
                     onChange={(e) => setProponenteDni(e.target.value)}
                     placeholder="12345678"
-                    className="rounded-lg border border-black/[.1] bg-white px-3 py-2 text-sm text-zinc-950 outline-none focus:border-zinc-950 dark:border-white/[.15] dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-zinc-50"
+                    className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-900 outline-none focus:border-transparent focus:ring-2 focus:ring-blue-500"
                   />
                 </label>
                 <label className="flex flex-col gap-1.5">
-                  <span className="text-sm text-zinc-600 dark:text-zinc-400">
-                    Domicilio
-                  </span>
+                  <span className="text-sm text-gray-600">Domicilio</span>
                   <input
                     type="text"
                     value={proponenteDomicilio}
                     onChange={(e) => setProponenteDomicilio(e.target.value)}
                     placeholder="Av. San Martín 1234, Mendoza"
-                    className="rounded-lg border border-black/[.1] bg-white px-3 py-2 text-sm text-zinc-950 outline-none focus:border-zinc-950 dark:border-white/[.15] dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-zinc-50"
+                    className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-900 outline-none focus:border-transparent focus:ring-2 focus:ring-blue-500"
                   />
                 </label>
                 <label className="flex flex-col gap-1.5">
-                  <span className="text-sm text-zinc-600 dark:text-zinc-400">
-                    Nacionalidad
-                  </span>
+                  <span className="text-sm text-gray-600">Nacionalidad</span>
                   <input
                     type="text"
                     value={proponenteNacionalidad}
                     onChange={(e) => setProponenteNacionalidad(e.target.value)}
                     placeholder="Argentina"
-                    className="rounded-lg border border-black/[.1] bg-white px-3 py-2 text-sm text-zinc-950 outline-none focus:border-zinc-950 dark:border-white/[.15] dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-zinc-50"
+                    className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-900 outline-none focus:border-transparent focus:ring-2 focus:ring-blue-500"
                   />
                 </label>
               </div>
 
               <div className="flex flex-col gap-4">
-                <p className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                <p className="text-sm font-medium text-gray-700">
                   Aceptante
                 </p>
                 <label className="flex flex-col gap-1.5">
-                  <span className="text-sm text-zinc-600 dark:text-zinc-400">
-                    Nombre
-                  </span>
+                  <span className="text-sm text-gray-600">Nombre</span>
                   <input
                     type="text"
                     value={aceptanteNombre}
                     onChange={(e) => setAceptanteNombre(e.target.value)}
                     placeholder="Ej: María Gómez"
-                    className="rounded-lg border border-black/[.1] bg-white px-3 py-2 text-sm text-zinc-950 outline-none focus:border-zinc-950 dark:border-white/[.15] dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-zinc-50"
+                    className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-900 outline-none focus:border-transparent focus:ring-2 focus:ring-blue-500"
                   />
                 </label>
                 <label className="flex flex-col gap-1.5">
-                  <span className="text-sm text-zinc-600 dark:text-zinc-400">
-                    Email
-                  </span>
+                  <span className="text-sm text-gray-600">Email</span>
                   <input
                     type="email"
                     value={aceptanteEmail}
                     onChange={(e) => setAceptanteEmail(e.target.value)}
                     placeholder="maria@email.com"
-                    className="rounded-lg border border-black/[.1] bg-white px-3 py-2 text-sm text-zinc-950 outline-none focus:border-zinc-950 dark:border-white/[.15] dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-zinc-50"
+                    className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-900 outline-none focus:border-transparent focus:ring-2 focus:ring-blue-500"
                   />
                 </label>
                 <label className="flex flex-col gap-1.5">
-                  <span className="text-sm text-zinc-600 dark:text-zinc-400">
-                    DNI
-                  </span>
+                  <span className="text-sm text-gray-600">DNI</span>
                   <input
                     type="text"
                     value={aceptanteDni}
                     onChange={(e) => setAceptanteDni(e.target.value)}
                     placeholder="12345678"
-                    className="rounded-lg border border-black/[.1] bg-white px-3 py-2 text-sm text-zinc-950 outline-none focus:border-zinc-950 dark:border-white/[.15] dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-zinc-50"
+                    className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-900 outline-none focus:border-transparent focus:ring-2 focus:ring-blue-500"
                   />
                 </label>
                 <label className="flex flex-col gap-1.5">
-                  <span className="text-sm text-zinc-600 dark:text-zinc-400">
-                    Domicilio
-                  </span>
+                  <span className="text-sm text-gray-600">Domicilio</span>
                   <input
                     type="text"
                     value={aceptanteDomicilio}
                     onChange={(e) => setAceptanteDomicilio(e.target.value)}
                     placeholder="Av. San Martín 1234, Mendoza"
-                    className="rounded-lg border border-black/[.1] bg-white px-3 py-2 text-sm text-zinc-950 outline-none focus:border-zinc-950 dark:border-white/[.15] dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-zinc-50"
+                    className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-900 outline-none focus:border-transparent focus:ring-2 focus:ring-blue-500"
                   />
                 </label>
                 <label className="flex flex-col gap-1.5">
-                  <span className="text-sm text-zinc-600 dark:text-zinc-400">
-                    Nacionalidad
-                  </span>
+                  <span className="text-sm text-gray-600">Nacionalidad</span>
                   <input
                     type="text"
                     value={aceptanteNacionalidad}
                     onChange={(e) => setAceptanteNacionalidad(e.target.value)}
                     placeholder="Argentina"
-                    className="rounded-lg border border-black/[.1] bg-white px-3 py-2 text-sm text-zinc-950 outline-none focus:border-zinc-950 dark:border-white/[.15] dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-zinc-50"
+                    className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-900 outline-none focus:border-transparent focus:ring-2 focus:ring-blue-500"
                   />
                 </label>
               </div>
             </div>
           </section>
 
-          <section className="flex flex-col gap-3 rounded-2xl border border-black/[.08] bg-white p-6 dark:border-white/[.1] dark:bg-zinc-950">
-            <h2 className="text-sm font-medium uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
+          <section className="flex flex-col gap-3 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+            <h2 className="text-sm font-bold uppercase tracking-wide text-[#1B3A6B]">
               Descripción del acuerdo
             </h2>
             <textarea
@@ -663,15 +643,15 @@ export default function CrearAcuerdo() {
               onChange={(e) => setDescripcion(e.target.value)}
               rows={5}
               placeholder="Describí el acuerdo en tus palabras (ej: Juan me presta $500 en 30 días con interés del 5%)"
-              className="resize-none rounded-lg border border-black/[.1] bg-white px-3 py-2 text-sm text-zinc-950 outline-none focus:border-zinc-950 dark:border-white/[.15] dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-zinc-50"
+              className="resize-none rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-900 outline-none focus:border-transparent focus:ring-2 focus:ring-blue-500"
             />
           </section>
 
-          <section className="flex flex-col gap-3 rounded-2xl border border-black/[.08] bg-white p-6 dark:border-white/[.1] dark:bg-zinc-950">
-            <h2 className="text-sm font-medium uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
+          <section className="flex flex-col gap-3 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+            <h2 className="text-sm font-bold uppercase tracking-wide text-[#1B3A6B]">
               Capacidad jurídica
             </h2>
-            <label className="flex items-start gap-2 text-sm text-zinc-700 dark:text-zinc-300">
+            <label className="flex items-start gap-2 text-sm text-gray-700">
               <input
                 type="checkbox"
                 checked={proponenteCapacidad}
@@ -683,7 +663,7 @@ export default function CrearAcuerdo() {
                 jurídica para contratar.
               </span>
             </label>
-            <label className="flex items-start gap-2 text-sm text-zinc-700 dark:text-zinc-300">
+            <label className="flex items-start gap-2 text-sm text-gray-700">
               <input
                 type="checkbox"
                 checked={aceptanteCapacidad}
@@ -716,33 +696,31 @@ export default function CrearAcuerdo() {
               !aceptanteCapacidad
             }
             onClick={generarClausulas}
-            className="flex h-12 items-center justify-center rounded-full bg-zinc-950 px-8 text-base font-medium text-zinc-50 transition-colors hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-40 dark:bg-zinc-50 dark:text-zinc-950 dark:hover:bg-zinc-200"
+            className="flex h-12 items-center justify-center rounded-full bg-[#1B3A6B] px-8 text-base font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
           >
             {generando ? "Generando..." : "Generar cláusulas con IA"}
           </button>
 
-          {error && (
-            <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
-          )}
+          {error && <p className="text-sm text-red-600">{error}</p>}
 
-          <section className="flex flex-col gap-3 rounded-2xl border border-dashed border-black/[.15] bg-white p-6 dark:border-white/[.2] dark:bg-zinc-950">
-            <h2 className="text-sm font-medium uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
+          <section className="flex flex-col gap-3 rounded-xl border border-dashed border-gray-300 bg-white p-6 shadow-sm">
+            <h2 className="text-sm font-bold uppercase tracking-wide text-[#1B3A6B]">
               Preview de cláusulas
             </h2>
 
             {generando ? (
-              <div className="flex min-h-32 items-center justify-center rounded-lg bg-zinc-50 text-center text-sm text-zinc-500 dark:bg-zinc-900 dark:text-zinc-400">
+              <div className="flex min-h-32 items-center justify-center rounded-lg bg-gray-50 text-center text-sm text-gray-500">
                 La IA está redactando las cláusulas...
               </div>
             ) : clausulas.length === 0 ? (
-              <div className="flex min-h-32 items-center justify-center rounded-lg bg-zinc-50 text-center text-sm text-zinc-400 dark:bg-zinc-900 dark:text-zinc-500">
+              <div className="flex min-h-32 items-center justify-center rounded-lg bg-gray-50 text-center text-sm text-gray-400">
                 Las cláusulas generadas aparecerán acá.
               </div>
             ) : (
               <div className="flex flex-col gap-4">
                 {clausulas.map((clausula, index) => (
                   <div key={index} className="flex gap-3">
-                    <span className="mt-2 text-sm font-medium text-zinc-500 dark:text-zinc-400">
+                    <span className="mt-2 text-sm font-medium text-gray-500">
                       {index + 1}.
                     </span>
                     <textarea
@@ -751,12 +729,12 @@ export default function CrearAcuerdo() {
                         actualizarClausula(index, e.target.value)
                       }
                       rows={2}
-                      className="flex-1 resize-none rounded-lg border border-black/[.1] bg-white px-3 py-2 text-sm text-zinc-950 outline-none focus:border-zinc-950 dark:border-white/[.15] dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-zinc-50"
+                      className="flex-1 resize-none rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-900 outline-none focus:border-transparent focus:ring-2 focus:ring-blue-500"
                     />
                     <button
                       type="button"
                       onClick={() => eliminarClausula(index)}
-                      className="self-start rounded-lg px-2 py-1 text-sm text-zinc-500 hover:text-red-600 dark:text-zinc-400 dark:hover:text-red-400"
+                      className="self-start rounded-lg px-2 py-1 text-sm text-gray-500 hover:text-red-600"
                     >
                       Eliminar
                     </button>
@@ -766,7 +744,7 @@ export default function CrearAcuerdo() {
                 <button
                   type="button"
                   onClick={agregarClausula}
-                  className="self-start rounded-lg px-3 py-1.5 text-sm font-medium text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-900"
+                  className="flex h-9 items-center justify-center self-start rounded-full border border-[#1B3A6B] px-4 text-sm font-medium text-[#1B3A6B] hover:bg-[#1B3A6B]/5"
                 >
                   + Agregar cláusula
                 </button>
@@ -788,8 +766,8 @@ export default function CrearAcuerdo() {
           )}
 
           {clausulas.length > 0 && (
-            <section className="flex flex-col gap-4 rounded-2xl border border-black/[.08] bg-white p-6 dark:border-white/[.1] dark:bg-zinc-950">
-              <h2 className="text-sm font-medium uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
+            <section className="flex flex-col gap-4 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+              <h2 className="text-sm font-bold uppercase tracking-wide text-[#1B3A6B]">
                 Firmar acuerdo
               </h2>
 
@@ -800,7 +778,7 @@ export default function CrearAcuerdo() {
                     !!firmas.proponente || !proponenteNombre.trim() || sellando
                   }
                   onClick={() => firmarComo("proponente")}
-                  className="flex h-12 flex-col items-center justify-center rounded-xl border border-black/[.1] px-4 text-sm font-medium text-zinc-950 transition-colors hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/[.15] dark:text-zinc-50 dark:hover:bg-zinc-900"
+                  className="flex h-12 flex-col items-center justify-center rounded-full border border-[#1B3A6B] px-4 text-sm font-medium text-[#1B3A6B] transition-colors hover:bg-[#1B3A6B]/5 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {firmas.proponente ? (
                     <span className="text-center text-xs leading-tight">
@@ -819,7 +797,7 @@ export default function CrearAcuerdo() {
                     !!firmas.aceptante || !aceptanteNombre.trim() || sellando
                   }
                   onClick={() => firmarComo("aceptante")}
-                  className="flex h-12 flex-col items-center justify-center rounded-xl border border-black/[.1] px-4 text-sm font-medium text-zinc-950 transition-colors hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/[.15] dark:text-zinc-50 dark:hover:bg-zinc-900"
+                  className="flex h-12 flex-col items-center justify-center rounded-full border border-[#1B3A6B] px-4 text-sm font-medium text-[#1B3A6B] transition-colors hover:bg-[#1B3A6B]/5 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {firmas.aceptante ? (
                     <span className="text-center text-xs leading-tight">
@@ -834,15 +812,13 @@ export default function CrearAcuerdo() {
               </div>
 
               {sellando && (
-                <p className="text-sm text-zinc-500 dark:text-zinc-400">
-                  Sellando acuerdo...
-                </p>
+                <p className="text-sm text-gray-600">Sellando acuerdo...</p>
               )}
 
               {sellado && acuerdoSellado && (
-                <div className="flex flex-col gap-4 rounded-xl bg-zinc-50 p-4 text-sm text-zinc-700 dark:bg-zinc-900 dark:text-zinc-300">
+                <div className="flex flex-col gap-4 rounded-xl bg-gray-50 p-4 text-sm text-gray-700">
                   <div className="flex flex-col gap-2">
-                    <p className="font-medium text-zinc-950 dark:text-zinc-50">
+                    <p className="font-medium text-gray-900">
                       Acuerdo sellado — Hash SHA-256:{" "}
                       <span className="break-all font-mono text-xs">
                         {acuerdoSellado.hash}
@@ -855,41 +831,39 @@ export default function CrearAcuerdo() {
                   </div>
 
                   {registrandoBlockchain && (
-                    <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                    <p className="text-sm text-gray-600">
                       Registrando en blockchain...
                     </p>
                   )}
 
                   {errorBlockchain && (
-                    <p className="text-sm text-red-600 dark:text-red-400">
-                      {errorBlockchain}
-                    </p>
+                    <p className="text-sm text-red-600">{errorBlockchain}</p>
                   )}
 
                   {acuerdoSellado.txHash && (
                     <div className="flex flex-col gap-1">
-                      <p className="font-medium text-zinc-950 dark:text-zinc-50">
+                      <p className="font-medium text-gray-900">
                         Registrado en Stellar Testnet
                       </p>
                       <a
                         href={`https://stellar.expert/explorer/testnet/tx/${acuerdoSellado.txHash}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="break-all font-mono text-xs text-blue-600 underline hover:text-blue-500 dark:text-blue-400"
+                        className="break-all font-mono text-xs text-[#1B3A6B] underline hover:opacity-80"
                       >
                         {acuerdoSellado.txHash}
                       </a>
                     </div>
                   )}
 
-                  <label className="flex items-center gap-2 text-sm text-zinc-700 dark:text-zinc-300">
+                  <label className="flex items-center gap-2 text-sm text-gray-700">
                     ¿Cuántos ejemplares necesitás?
                     <select
                       value={cantidadEjemplares}
                       onChange={(e) =>
                         setCantidadEjemplares(Number(e.target.value))
                       }
-                      className="rounded-lg border border-black/[.1] bg-white px-2 py-1 text-sm text-zinc-950 outline-none focus:border-zinc-950 dark:border-white/[.15] dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-zinc-50"
+                      className="rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-900 outline-none focus:border-transparent focus:ring-2 focus:ring-blue-500"
                     >
                       <option value={1}>1</option>
                       <option value={2}>2</option>
@@ -902,7 +876,7 @@ export default function CrearAcuerdo() {
                     onClick={() =>
                       generarPDF(acuerdoSellado, cantidadEjemplares)
                     }
-                    className="flex h-11 items-center justify-center self-start rounded-full bg-zinc-950 px-6 text-sm font-medium text-zinc-50 transition-colors hover:bg-zinc-800 dark:bg-zinc-50 dark:text-zinc-950 dark:hover:bg-zinc-200"
+                    className="flex h-11 items-center justify-center self-start rounded-full bg-[#1B3A6B] px-6 text-sm font-semibold text-white transition-opacity hover:opacity-90"
                   >
                     Descargar PDF
                   </button>
