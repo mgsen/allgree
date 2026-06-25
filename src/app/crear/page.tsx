@@ -253,38 +253,36 @@ function generarPDF(acuerdo: Acuerdo, ejemplares: number = 1) {
     y += lineas.length * 5 + 4;
   });
 
-  // Pie de página en todas las páginas
+  // Pie de página al final del documento
   const totalPaginas = doc.getNumberOfPages();
-  for (let pagina = 1; pagina <= totalPaginas; pagina++) {
-    doc.setPage(pagina);
-    doc.setDrawColor(220);
-    doc.line(marginX, pageHeight - footerHeight + 2, pageWidth - marginX, pageHeight - footerHeight + 2);
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(8);
-    doc.setTextColor(100);
-    doc.text(`Hash SHA-256: ${acuerdo.hash}`, marginX, pageHeight - footerHeight + 8, {
-      maxWidth,
-    });
-    if (acuerdo.txHash) {
-      doc.text(
-        `Transacción blockchain verificable en: ${acuerdo.txHash}`,
-        marginX,
-        pageHeight - footerHeight + 13,
-        { maxWidth },
-      );
-      doc.text(
-        `https://stellar.expert/explorer/testnet/tx/${acuerdo.txHash}`,
-        marginX,
-        pageHeight - footerHeight + 18,
-        { maxWidth },
-      );
-    }
+  doc.setPage(totalPaginas);
+  doc.setDrawColor(220);
+  doc.line(marginX, pageHeight - footerHeight + 2, pageWidth - marginX, pageHeight - footerHeight + 2);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(8);
+  doc.setTextColor(100);
+  doc.text(`Hash SHA-256: ${acuerdo.hash}`, marginX, pageHeight - footerHeight + 8, {
+    maxWidth,
+  });
+  if (acuerdo.txHash) {
     doc.text(
-      "Documento generado por Allgree. Hash verificable en allgree.vercel.app/verificar",
+      `Transacción blockchain verificable en: ${acuerdo.txHash}`,
       marginX,
-      pageHeight - footerHeight + (acuerdo.txHash ? 23 : 14),
+      pageHeight - footerHeight + 13,
+      { maxWidth },
+    );
+    doc.text(
+      `https://stellar.expert/explorer/testnet/tx/${acuerdo.txHash}`,
+      marginX,
+      pageHeight - footerHeight + 18,
+      { maxWidth },
     );
   }
+  doc.text(
+    "Documento generado por Allgree. Hash verificable en allgree.vercel.app/verificar",
+    marginX,
+    pageHeight - footerHeight + (acuerdo.txHash ? 23 : 14),
+  );
 
   const pdfBase64 = doc.output("datauristring").split(",")[1];
   localStorage.setItem(
