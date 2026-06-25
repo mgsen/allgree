@@ -99,20 +99,26 @@ export default function About() {
 
         {/* Fundamento académico */}
         <section className="px-6 py-20">
-          <div className="mx-auto flex max-w-3xl flex-col gap-8">
-            <h2 className="text-center text-3xl font-bold tracking-tight text-[#1B3A6B]">
-              Líneas teóricas aplicadas
-            </h2>
-            <p className="text-center text-sm text-slate-500">
-              Materia: Teoría de la Computación II
-            </p>
-            <div className="flex flex-col gap-4">
-              {LINEAS.map(({ titulo, descripcion }) => (
+          <div className="mx-auto flex max-w-5xl flex-col gap-10">
+            <div className="flex flex-col gap-2 text-center">
+              <h2 className="text-3xl font-bold tracking-tight text-[#1B3A6B]">
+                Contenidos de Teoría de la Computación II aplicados
+              </h2>
+              <p className="text-sm text-slate-500">
+                Materia de 2.º año — Licenciatura en Sistemas de Información
+              </p>
+            </div>
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {UNIDADES.map(({ icono, unidad, tecnologia, descripcion }) => (
                 <div
-                  key={titulo}
-                  className="flex flex-col gap-1 rounded-2xl border border-slate-200 bg-white p-6"
+                  key={unidad}
+                  className="flex flex-col gap-2 rounded-2xl bg-gray-50 p-6"
                 >
-                  <h3 className="font-bold text-[#1B3A6B]">{titulo}</h3>
+                  <span className="text-4xl">{icono}</span>
+                  <h3 className="font-bold text-[#1B3A6B]">{unidad}</h3>
+                  <p className="text-sm font-semibold text-slate-700">
+                    {tecnologia}
+                  </p>
                   <p className="text-slate-600">{descripcion}</p>
                 </div>
               ))}
@@ -195,25 +201,39 @@ const EQUIPO = [
   },
 ];
 
-const LINEAS = [
+const UNIDADES = [
   {
-    titulo: "Línea 1 (Lenguajes)",
+    icono: "🔤",
+    unidad: "Unidad I — Lenguajes de Programación",
+    tecnologia: "TypeScript",
     descripcion:
-      "TypeScript — paradigma tipado estático, interfaces y tipos estrictos.",
+      "Paradigma tipado estático, binding léxico, criterios de diseño del lenguaje.",
   },
   {
-    titulo: "Línea 2 (Sistemas de Tipos)",
+    icono: "🧩",
+    unidad: "Unidad II — Sistemas de Tipos",
+    tecnologia: "Interfaces estrictas",
     descripcion:
-      "Strict mode en TypeScript previene errores en tiempo de compilación.",
+      "Tipos Acuerdo, Parte y Firma con TypeScript strict mode.",
   },
   {
-    titulo: "Línea 3 (Compiladores)",
+    icono: "⚙️",
+    unidad: "Unidad III — Diseño de Compiladores",
+    tecnologia: "Next.js + Turbopack",
     descripcion:
-      "Next.js + Turbopack genera AST optimizado y bytecode en cada build.",
+      "Análisis léxico, sintáctico y generación de bytecode optimizado.",
   },
   {
-    titulo: "Línea 4 (Seguridad/Blockchain)",
+    icono: "🗄️",
+    unidad: "Unidad IV — Teoría de Base de Datos",
+    tecnologia: "Modelo relacional",
     descripcion:
-      "SHA-256 + Stellar Testnet — hash criptográfico con registro inmutable.",
+      "Entidades con relaciones definidas, diseñado para PostgreSQL en producción.",
+  },
+  {
+    icono: "🔐",
+    unidad: "Unidad V — Seguridad y Blockchain",
+    tecnologia: "SHA-256 + Stellar Testnet",
+    descripcion: "Criptografía, autenticación KYC y registro inmutable.",
   },
 ];
